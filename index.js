@@ -51,7 +51,6 @@ express()
       // const results = { 'results': (result) ? result.rows : null};
       const results = API.guest.allGuest;
       res.render('pages/db', results );
-      client.release();
     } catch (err) {
       console.error(err);
       res.send("Error " + err);
