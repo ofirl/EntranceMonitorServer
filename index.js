@@ -86,6 +86,7 @@ express()
   .post('/addGuest', express.json(), middlewares.asyncMiddleware(API.guest.addGuest))
   .post('/removeGuest', express.json(), middlewares.asyncMiddleware(API.guest.removeGuest))
   .post('/getGuests', express.json(), middlewares.asyncMiddleware(API.guest.getGuests))
+  .get('/addGuest', (req, res) => { res.send('yay!'); })
 
   // start the server
   .listen(PORT, () => console.log(`Listening on ${PORT}`))
