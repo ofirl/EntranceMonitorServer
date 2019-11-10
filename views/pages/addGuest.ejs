@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <script type="text/javascript">
+
+            function addGuest() {
+                const url = "https://entrance-monitor-server.herokuapp.com/addGuest";
+
+                let data = {
+                    guestId: guestIdInput.value
+                };
+
+                const otherParam = {
+                    headers: {
+                        "content-type": "application/json; charset=UTF-8"
+                    },
+                    body: data,
+                    method: "POST"
+                };
+
+                fetch()
+                .then(data => data.json())
+                .then(res => console.log(res))
+                .catch(error => console.error(error))
+                ;
+            }
+
+        </script>
+    </head>
+    <body>
+
+        <input id="guestIdInput" type="text" />
+        <button onClick="addGuest" > Send </button>
+
+    </body>
+</html>

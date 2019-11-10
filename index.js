@@ -41,7 +41,8 @@ express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
 
-  .get('/', (req, res) => res.render('pages/index'))
+  .get('/', (req, res) => res.render('pages/addGuest'))
+  .get('/startPage', (req, res) => res.render('pages/index'))
   .get('/test', (req, res) => { res.send('yay!'); })
 
   // Create API endpoints
