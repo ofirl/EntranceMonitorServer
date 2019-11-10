@@ -36,7 +36,7 @@
 
             fetch(url, otherParam)
                 .then(data => data.json())
-                .then(res => res ? showMsg(true) : showMsg(false))
+                .then(res => { console.log(res); res ? showMsg(true) : showMsg(false); })
                 .catch(error => { console.error(error); showMsg(false); })
                 ;
         }
