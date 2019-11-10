@@ -6,7 +6,7 @@
                 const url = "https://entrance-monitor-server.herokuapp.com/addGuest";
 
                 let data = {
-                    guestId: guestIdInput.value
+                    guestId: parseInt(document.getElementById('guestIdInput').value)
                 };
 
                 const otherParam = {
