@@ -47,11 +47,11 @@ express()
   .get('/db', async (req, res) => {
     try {
       // const client = await pool.connect()
-      // const result = await client.query('SELECT * FROM test_table');
+      // const result = await client.query('SELECT * FROM guests');
       // const results = { 'results': (result) ? result.rows : null};
       const results = await API.guest.allGuest();
-      console.log(results);
-      res.render('pages/db', results );
+      // console.log(results);
+      res.render('pages/db', { results });
     } catch (err) {
       console.error(err);
       res.send("Error " + err);
