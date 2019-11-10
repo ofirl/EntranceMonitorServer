@@ -44,6 +44,20 @@ express()
   .get('/', (req, res) => res.render('pages/addGuest'))
   .get('/startPage', (req, res) => res.render('pages/index'))
   .get('/test', (req, res) => { res.send('yay!'); })
+  .get('/db', async (req, res) => {
+    try {
+      // const client = await pool.connect()
+      // const result = await client.query('SELECT * FROM test_table');
+      // const results = { 'results': (result) ? result.rows : null};
+      const results = API.guest.allGuest;
+      res.render('pages/db', results );
+      client.release();
+    } catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
+
 
   // Create API endpoints
   // This is where users point their browsers in order to get logged in

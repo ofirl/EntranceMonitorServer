@@ -7,9 +7,6 @@ const allGuest = async (req, res) => {
 };
 
 const addGuest = async (req, res) => {
-    console.log('addGuest called');
-    console.log(req.body);
-    console.log(req);
     let success = await guestUtil.addGuest(req.body);
     return res.json({ success });
 };
