@@ -12,6 +12,7 @@
             if (success) {
                 document.getElementById('successMsg').classList.remove('hidden');
                 document.getElementById('errorMsg').classList.add('hidden');
+                document.getElementById('guestIdInput').value = "";
             }
             else {
                 document.getElementById('successMsg').classList.add('hidden');
@@ -57,10 +58,10 @@
     <a href="/db"> view db </a>
 
     <br />
-    <div id="successMsg">
+    <div id="successMsg" class="hidden">
         guest added
     </div>
-    <div id="errorMsg">
+    <div id="errorMsg"  class="hidden">
         error, please try again
     </div>
 </body>
