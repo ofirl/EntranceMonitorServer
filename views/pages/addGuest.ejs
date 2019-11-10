@@ -17,6 +17,11 @@
                 document.getElementById('successMsg').classList.add('hidden');
                 document.getElementById('errorMsg').classList.remove('hidden');
             }
+
+            setTimeout( () => {
+                document.getElementById('successMsg').classList.add('hidden');
+                document.getElementById('errorMsg').classList.add('hidden');
+            }, 2000)
         }
 
         function addGuest() {
