@@ -1,37 +1,63 @@
 <html>
-    <head>
-        <script type="text/javascript">
 
-            function addGuest() {
-                const url = "https://entrance-monitor-server.herokuapp.com/addGuest";
+<head>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script type="text/javascript">
 
-                let data = {
-                    guestId: parseInt(document.getElementById('guestIdInput').value)
-                };
-
-                const otherParam = {
-                    headers: {
-                        "content-type": "application/json; charset=UTF-8"
-                    },
-                    body: JSON.stringify(data),
-                    method: "POST"
-                };
-
-                fetch(url, otherParam)
-                .then(data => { console.log(data); return data.json();})
-                .then(res => console.log(res))
-                .catch(error => console.error(error))
-                ;
+        function showMsg(success) {
+            if (success) {
+                document.getElementById('successMsg').classList.remove('hidden');
+                document.getElementById('errorMsg').classList.add('hidden');
             }
+            else {
+                document.getElementById('successMsg').classList.add('hidden');
+                document.getElementById('errorMsg').classList.remove('hidden');
+            }
+        }
 
-        </script>
-    </head>
-    <body>
+        function addGuest() {
+            const url = "https://entrance-monitor-server.herokuapp.com/addGuest";
 
-        <input id="guestIdInput" type="text" />
-        <button onClick="addGuest()" > Send </button>
+            let data = {
+                guestId: parseInt(document.getElementById('guestIdInput').value)
+            };
 
-        <a href="/db"> view db </a>
+            const otherParam = {
+                headers: {
+                    "content-type": "application/json; charset=UTF-8"
+                },
+                body: JSON.stringify(data),
+                method: "POST"
+            };
 
-    </body>
+            fetch(url, otherParam)
+                .then(data => data.json())
+                .then(res => res ? showMsg(true) : showMsg(false))
+                .catch(error => { console.error(error); showMsg(false); })
+                ;
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <input id="guestIdInput" type="text" />
+    <button onClick="addGuest()"> Send </button>
+
+    <a href="/db"> view db </a>
+
+    <br />
+    <div id="successMsg">
+        guest added
+    </div>
+    <div id="errorMsg">
+        error, please try again
+    </div>
+</body>
+
 </html>
