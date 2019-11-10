@@ -2,8 +2,7 @@ const guestUtil = require('../Utils/guests');
 // const middlewares = require('../Utils/middlewares');
 
 const allGuest = async (req, res) => {
-    let success = await guestUtil.getAllGuests();
-    return res.json({ success });
+    return await guestUtil.getAllGuests();
 };
 
 const addGuest = async (req, res) => {
