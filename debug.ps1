@@ -1,0 +1,1 @@
+Start-Process powershell.exe -ArgumentList '-Command "heroku ps:forward 9229 -a timefy-server"','-NoExit'
