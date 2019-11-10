@@ -50,6 +50,7 @@ express()
       // const result = await client.query('SELECT * FROM test_table');
       // const results = { 'results': (result) ? result.rows : null};
       const results = await API.guest.allGuest();
+      console.log(results);
       res.render('pages/db', results );
     } catch (err) {
       console.error(err);
