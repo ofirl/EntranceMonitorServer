@@ -10,6 +10,15 @@ const allGuests = async (req, res) => {
     }
 };
 
+const allExpected = async (req, res) => {
+    let results = await guestUtil.getAllExpectedGuests();
+    if (res)
+        return res.json({ results });
+    else {
+        return results;
+    }
+};
+
 const addGuest = async (req, res) => {
     let success = await guestUtil.addGuest(req.body);
     return res.json({ success });
@@ -24,6 +33,7 @@ module.exports = {
     // emailExtract middleware
     ...[
         allGuests,
+        allExpected,
         addGuest,
         deleteGuest,
     ].reduce((prev, curr) => {

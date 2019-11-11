@@ -8,6 +8,10 @@ const getAllGuests = async () => {
     return await dbUtil.executeQuery(`SELECT id, guest_id, guest_name from guests`);
 };
 
+const getAllExpectedGuests = async () => {
+    return await dbUtil.executeQuery(`SELECT id, guest_id from expected`);
+};
+
 const addGuest = async ({ guestId, guestName = "" }) => {
     await dbUtil.executeQuery(`INSERT INTO guests(
         guest_id, guest_name)
@@ -27,6 +31,7 @@ const deleteGuest = async (guestId) => {
 module.exports = {
     getGuest,
     getAllGuests,
+    getAllExpectedGuests,
     addGuest,
     deleteGuest,
 }

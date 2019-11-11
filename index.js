@@ -48,7 +48,7 @@ express()
     try {
       // const client = await pool.connect()
       // const result = await client.query('SELECT * FROM guests');
-      // const results = { 'results': (result) ? result.rows : null}; 
+      // const results = { 'results': (result) ? result.rows : null};
       const results = await API.guest.allGuests();
       // console.log(results);
       res.render('pages/db', { results, count: results.length });
@@ -101,6 +101,7 @@ express()
   //.post('/addGuest', middlewares.asyncMiddleware(API.guest.addGuest))
   .post('/removeGuest', express.json(), middlewares.asyncMiddleware(API.guest.removeGuest))
   .post('/allGuests', express.json(), middlewares.asyncMiddleware(API.guest.allGuests))
+  .post('/allExpectedGuests', express.json(), middlewares.asyncMiddleware(API.guest.allExpected))
   .get('/addGuest', (req, res) => { res.send('yay!'); })
 
   // start the server
