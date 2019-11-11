@@ -2,7 +2,6 @@ const guestUtil = require('../Utils/guests');
 // const middlewares = require('../Utils/middlewares');
 
 const allGuests = async (req, res) => {
-    console.log('all guests');
     let results = await guestUtil.getAllGuests();
     return res.json({ results });
 };
