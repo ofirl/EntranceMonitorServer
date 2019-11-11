@@ -51,7 +51,7 @@ express()
       // const results = { 'results': (result) ? result.rows : null};
       const results = await API.guest.allGuests();
       // console.log(results);
-      res.render('pages/db', { results, count: results.length });
+      res.render('pages/db', { results: results.results, count: results.results.length });
     } catch (err) {
       console.error(err);
       res.send("Error " + err);
