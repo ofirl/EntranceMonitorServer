@@ -100,7 +100,7 @@ express()
   .post('/addGuest', express.json(), middlewares.asyncMiddleware(API.guest.addGuest))
   //.post('/addGuest', middlewares.asyncMiddleware(API.guest.addGuest))
   .post('/removeGuest', express.json(), middlewares.asyncMiddleware(API.guest.removeGuest))
-  .post('/getGuests', express.json(), middlewares.asyncMiddleware(API.guest.getGuests))
+  .post('/allGuests', express.json(), middlewares.asyncMiddleware(API.guest.allGuests))
   .get('/addGuest', (req, res) => { res.send('yay!'); })
 
   // start the server
