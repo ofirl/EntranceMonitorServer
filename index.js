@@ -48,7 +48,7 @@ express()
     try {
       // const client = await pool.connect()
       // const result = await client.query('SELECT * FROM guests');
-      // const results = { 'results': (result) ? result.rows : null};
+      // const results = { 'results': (result) ? result.rows : null}; 
       const results = await API.guest.allGuests();
       // console.log(results);
       res.render('pages/db', { results, count: results.length });
