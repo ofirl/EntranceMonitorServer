@@ -1,11 +1,11 @@
 const dbUtil = require('./db');
 
 const getGuest = async (guestId) => {
-    return await dbUtil.executeQuery(`SELECT id, guest_id, guest_name from guests where guest_id=${guestId}`)
+    return await dbUtil.executeQuery(`SELECT id, guest_id, guest_name from guests where guest_id=${guestId}`);
 };
 
 const getAllGuests = async () => {
-    return await dbUtil.executeQuery(`SELECT id, guest_id, guest_name from guests`)
+    return await dbUtil.executeQuery(`SELECT id, guest_id, guest_name from guests`);
 };
 
 const addGuest = async ({ guestId, guestName = "" }) => {

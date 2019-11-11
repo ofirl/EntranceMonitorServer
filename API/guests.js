@@ -3,7 +3,8 @@ const guestUtil = require('../Utils/guests');
 
 const allGuests = async (req, res) => {
     console.log('all guests');
-    return await guestUtil.getAllGuests();
+    let results = await guestUtil.getAllGuests();
+    return res.json({ results });
 };
 
 const addGuest = async (req, res) => {
