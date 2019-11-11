@@ -1,7 +1,7 @@
 const guestUtil = require('../Utils/guests');
 // const middlewares = require('../Utils/middlewares');
 
-const allGuest = async (req, res) => {
+const allGuests = async (req, res) => {
     return await guestUtil.getAllGuests();
 };
 
@@ -18,7 +18,7 @@ const deleteGuest = async (req, res) => {
 module.exports = {
     // emailExtract middleware
     ...[
-        allGuest,
+        allGuests,
         addGuest,
         deleteGuest,
     ].reduce((prev, curr) => {
