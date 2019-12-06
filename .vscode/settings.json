@@ -1,0 +1,5 @@
+{
+    "appService.showBuildDuringDeployPrompt": false,
+    "appService.defaultWebAppToDeploy": "/subscriptions/0c79d7a8-82f0-46f9-a533-f9ec2464dddc/resourceGroups/Default-Storage-EastUS/providers/Microsoft.Web/sites/entrance-monitor",
+    "appService.deploySubpath": ""
+}
