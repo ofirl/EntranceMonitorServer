@@ -103,7 +103,7 @@ express()
   .post('/allGuests', express.json(), middlewares.asyncMiddleware(API.guest.allGuests))
   .post('/allExpectedGuests', express.json(), middlewares.asyncMiddleware(API.guest.allExpected))
   // .get('/addGuest', (req, res) => { res.send('yay!'); })
-  .get('/client/*', (req, res) => { res.render('client/index'); })
+  .get('/client/*', (req, res) => { res.sendFile(path.join(__dirname, 'client/index'); })
 
   // start the server
   .listen(PORT, () => console.log(`Listening on ${PORT}`))
