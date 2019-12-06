@@ -35,7 +35,7 @@ let tempCode = "";
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
-  .use('/static', express.static(path.join(__dirname, 'public/client/static')))
+  .use('/static', express.static(path.join(__dirname, 'views/client/static')))
   // .use(passport.initialize())
   .use(cors())
 
@@ -104,7 +104,7 @@ express()
   .post('/allGuests', express.json(), middlewares.asyncMiddleware(API.guest.allGuests))
   .post('/allExpectedGuests', express.json(), middlewares.asyncMiddleware(API.guest.allExpected))
   // .get('/addGuest', (req, res) => { res.send('yay!'); })
-  .get('/client/*', (req, res) => { res.sendFile(path.join(__dirname, 'public/client/index.html')); })
+  .get('/client/*', (req, res) => { res.render(path.join(__dirname, 'client/index.ejs')); })
 
   // start the server
   .listen(PORT, () => console.log(`Listening on ${PORT}`))
