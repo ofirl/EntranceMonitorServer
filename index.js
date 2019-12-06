@@ -35,6 +35,7 @@ let tempCode = "";
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
+  .use('/static', express.static(path.join(__dirname, 'public/client/static')))
   // .use(passport.initialize())
   .use(cors())
 
