@@ -21,9 +21,9 @@ const allExpected = async (req, res) => {
 
 const addGuest = async (req, res) => {
     let { guestId } = req.body;
-    if (guestId == null)
+    if (guestId == null || guestId === "")
         return res.json({ success: false });
-        
+
     let exists = await guestUtil.getGuest(guestId);
     if (exists != null && exists.length > 0)
         return res.json({ success: true });
