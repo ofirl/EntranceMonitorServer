@@ -20,7 +20,8 @@ const allExpected = async (req, res) => {
 };
 
 const addGuest = async (req, res) => {
-    if ((await guestUtil.getGuest()).length > 0)
+    let exists = await guestUtil.getGuest();
+    if (exists && exists.length > 0)
         return res.json({ success: true });
 
     let success = await guestUtil.addGuest(req.body);
