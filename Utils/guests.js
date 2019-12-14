@@ -12,10 +12,10 @@ const getAllExpectedGuests = async () => {
     return await dbUtil.executeQuery(`SELECT id, guest_id, guest_name from expected`);
 };
 
-const addGuest = async ({ guestId, guestName = "" }) => {
+const addGuest = async ({ guestId, guestName = "", arrival_time }) => {
     await dbUtil.executeQuery(`INSERT INTO guests(
-        guest_id, guest_name)
-        VALUES (${guestId}, '${guestName}')`);
+        guest_id, guest_name${arrival_time ? ', arrival_time' : ''})
+        VALUES (${guestId}, '${guestName}'${arrival_time ? `,'${arrival_time}'` : ''})`);
     let taskDbRow = await getGuest(guestId);
     let success = taskDbRow.length == 1;
     return { success };
