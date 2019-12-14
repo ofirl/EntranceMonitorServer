@@ -42,7 +42,8 @@ express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
 
-  .get('/', (req, res) => res.render('pages/addGuest'))
+  // .get('/', (req, res) => res.render('pages/addGuest'))
+  .get('/', (req, res) => res.render('client/index.ejs'))
   .get('/startPage', (req, res) => res.render('pages/index'))
   .get('/test', (req, res) => { res.send('yay!'); })
   .get('/db', async (req, res) => {
