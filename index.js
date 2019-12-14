@@ -36,6 +36,7 @@ let tempCode = "";
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .use('/static', express.static(path.join(__dirname, 'views/client/static')))
+  .use('/favicon.ico', express.static(path.join(__dirname, 'views/client/favicon.ico')))
   // .use(passport.initialize())
   .use(cors())
 
