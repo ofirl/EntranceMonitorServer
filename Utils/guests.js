@@ -9,7 +9,7 @@ const getAllGuests = async () => {
 };
 
 const getAllExpectedGuests = async () => {
-    return await dbUtil.executeQuery(`SELECT id, guest_id, guest_name from expected`);
+    return await dbUtil.executeQuery(`SELECT id, guest_id, guest_name, rank, unit from expected`);
 };
 
 const addGuest = async ({ guestId, guestName = "", arrival_time }) => {
