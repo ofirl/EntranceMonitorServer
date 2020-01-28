@@ -20,7 +20,9 @@ var cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 var guard = require('express-jwt-permissions')();
 
-let tempCode = "";
+// let tempCode = "";
+
+const usedPasswords = [];
 
 // Set up passport strategy
 // passport.use(new GoogleStrategy(
@@ -39,6 +41,24 @@ let tempCode = "";
 //   },
 // ));
 
+const checkOneTimePassword = (password) => {
+  try {
+    let sum = 0;
+    password.split('').map((c) => parseInt(c)).forEach(n => {
+      sum += n;
+    });
+
+    let result = sum === 31 && !usedPasswords.includes(password);
+    if (result)
+      usedPasswords.push(password);
+
+    return result;
+  }
+  catch (e) {
+    return false;
+  }
+};
+
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .use(cookieParser())
@@ -49,7 +69,7 @@ express()
         req.user = jwt.verify(req.cookies.authToken, process.env.SECRET);
       }
       catch (e) {
-
+        req.user = {};
       }
     }
 
@@ -73,7 +93,7 @@ express()
 
     if (password === process.env.PASSWORD_ADMIN)
       userType = 'admin';
-    else if (password && password.match(process.env.PASSWORD_REGEX))
+    else if (password && checkOneTimePassword(password))
       userType = 'user';
 
     if (userType) {
@@ -87,7 +107,7 @@ express()
   .get('/verify', guard.check([['admin'], ['user']]), (req, res) => {
     res.json({ success: true });
   })
-  .get('/', (req, res) => res.redirect('/client/'))
+  .get('/', (req, res) => res.redirect('/client/login/'))
   .get('/startPage', (req, res) => res.render('pages/index'))
   .get('/test', (req, res) => { res.send('yay!'); })
   .get('/db', async (req, res) => {
@@ -149,6 +169,7 @@ express()
   .post('/allGuests', guard.check([['admin']]), express.json(), middlewares.asyncMiddleware(API.guest.allGuests))
   .post('/allExpectedGuests', guard.check([['admin']]), express.json(), middlewares.asyncMiddleware(API.guest.allExpected))
   // .get('/addGuest', (req, res) => { res.send('yay!'); })
+  .get('/client/login', (req, res) => { res.render('client/index.ejs'); })
   .get('/client/*', guard.check([['admin'], ['user']]), (req, res) => { res.render('client/index.ejs'); })
 
   // start the server
