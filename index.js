@@ -63,13 +63,14 @@ express()
   .use(express.static(path.join(__dirname, 'public')))
   .use(cookieParser())
   .use((req, res, next) => {
+    req.user = {};
 
     if (req.cookies && req.cookies.authToken) {
       try {
         req.user = jwt.verify(req.cookies.authToken, process.env.SECRET);
       }
       catch (e) {
-        req.user = {};
+        
       }
     }
 
