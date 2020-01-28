@@ -64,7 +64,7 @@ express()
   .set('view engine', 'ejs')
 
   // .get('/', (req, res) => res.render('pages/addGuest'))
-  .get('/token', express.json(), (req, res) => {
+  .post('/token', express.json(), (req, res) => {
     if (req.user)
       res.sendStatus(200);
 
