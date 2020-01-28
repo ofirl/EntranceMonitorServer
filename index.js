@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express');
 var cors = require('cors');
 // const passport = require('passport');
@@ -13,6 +15,10 @@ const middlewares = require('./Utils/middlewares');
 const auth = require('./Utils/auth');
 
 const API = require('./API/index')
+
+var cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+var guard = require('express-jwt-permissions')();
 
 let tempCode = "";
 
@@ -35,6 +41,20 @@ let tempCode = "";
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
+  .use(cookieParser())
+  .use((req, res, next) => {
+
+    if (req.cookies && req.cookies.authToken) {
+      try {
+        req.user = jwt.verify(req.cookies.authToken, process.env.SECRET);
+      }
+      catch (e) {
+
+      }
+    }
+
+    next();
+  })
   .use('/static', express.static(path.join(__dirname, 'views/client/static')))
   .use('/favicon.ico', express.static(path.join(__dirname, 'views/client/favicon.ico')))
   // .use(passport.initialize())
@@ -44,6 +64,29 @@ express()
   .set('view engine', 'ejs')
 
   // .get('/', (req, res) => res.render('pages/addGuest'))
+  .get('/token', express.json(), (req, res) => {
+    if (req.user)
+      res.sendStatus(200);
+
+    let { password } = req.body;
+    let userType;
+
+    if (password === process.env.PASSWORD_ADMIN)
+      userType = 'admin';
+    else if (password && password.match(process.env.PASSWORD_REGEX))
+      userType = 'user';
+
+    if (userType) {
+      res.cookie('authToken', jwt.sign({ permissions: [userType] }, process.env.SECRET, { expiresIn: '1h' }), { httpOnly: true, secure: true });
+      res.sendStatus(200);
+      return;
+    }
+
+    res.sendStatus(401);
+  })
+  .get('/verify', guard.check([['admin'], ['user']]), (req, res) => {
+    res.json({ success: true });
+  })
   .get('/', (req, res) => res.redirect('/client/'))
   .get('/startPage', (req, res) => res.render('pages/index'))
   .get('/test', (req, res) => { res.send('yay!'); })
@@ -100,13 +143,13 @@ express()
   // .post('/deleteTask', middlewares.accessProtectionMiddleware, express.json(), middlewares.asyncMiddleware(API.task.deleteTask))
   // .post('/archiveTask', middlewares.accessProtectionMiddleware, express.json(), middlewares.asyncMiddleware(API.task.archiveTask))
 
-  .post('/addGuest', express.json(), middlewares.asyncMiddleware(API.guest.addGuest))
+  .post('/addGuest', guard.check([['admin'], ['user']]), express.json(), middlewares.asyncMiddleware(API.guest.addGuest))
   //.post('/addGuest', middlewares.asyncMiddleware(API.guest.addGuest))
-  .post('/removeGuest', express.json(), middlewares.asyncMiddleware(API.guest.removeGuest))
-  .post('/allGuests', express.json(), middlewares.asyncMiddleware(API.guest.allGuests))
-  .post('/allExpectedGuests', express.json(), middlewares.asyncMiddleware(API.guest.allExpected))
+  .post('/removeGuest', guard.check([['admin']]), express.json(), middlewares.asyncMiddleware(API.guest.removeGuest))
+  .post('/allGuests', guard.check([['admin']]), express.json(), middlewares.asyncMiddleware(API.guest.allGuests))
+  .post('/allExpectedGuests', guard.check([['admin']]), express.json(), middlewares.asyncMiddleware(API.guest.allExpected))
   // .get('/addGuest', (req, res) => { res.send('yay!'); })
-  .get('/client/*', (req, res) => { res.render('client/index.ejs'); })
+  .get('/client/*', guard.check([['admin'], ['user']]), (req, res) => { res.render('client/index.ejs'); })
 
   // start the server
   .listen(PORT, () => console.log(`Listening on ${PORT}`))
