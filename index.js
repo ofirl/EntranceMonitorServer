@@ -63,14 +63,14 @@ express()
   .use(express.static(path.join(__dirname, 'public')))
   .use(cookieParser())
   .use((req, res, next) => {
-    req.user = {};
+    req.user = { permissions: [] };
 
     if (req.cookies && req.cookies.authToken) {
       try {
         req.user = jwt.verify(req.cookies.authToken, process.env.SECRET);
       }
       catch (e) {
-        
+
       }
     }
 
@@ -86,7 +86,7 @@ express()
 
   // .get('/', (req, res) => res.render('pages/addGuest'))
   .post('/token', express.json(), (req, res) => {
-    if (req.user)
+    if (req.user.permissions.length > 0)
       res.sendStatus(200);
 
     let { password } = req.body;
@@ -94,11 +94,13 @@ express()
 
     if (password === process.env.PASSWORD_ADMIN)
       userType = 'admin';
+    else if (password === process.env.PASSWORD_USER)
+      userType = 'user';
     else if (password && checkOneTimePassword(password))
       userType = 'user';
 
     if (userType) {
-      res.cookie('authToken', jwt.sign({ permissions: [userType] }, process.env.SECRET, { expiresIn: '1h' }), { httpOnly: true, secure: true });
+      res.cookie('authToken', jwt.sign({ permissions: [userType] }, process.env.SECRET, { expiresIn: '3h' }), { httpOnly: true, secure: true });
       res.sendStatus(200);
       return;
     }
@@ -164,7 +166,7 @@ express()
   // .post('/deleteTask', middlewares.accessProtectionMiddleware, express.json(), middlewares.asyncMiddleware(API.task.deleteTask))
   // .post('/archiveTask', middlewares.accessProtectionMiddleware, express.json(), middlewares.asyncMiddleware(API.task.archiveTask))
 
-  .post('/addGuest', guard.check([['admin'], ['user']]), express.json(), middlewares.asyncMiddleware(API.guest.addGuest))
+  .post('/addGuest'/*, guard.check([['admin'], ['user']])*/, express.json(), middlewares.asyncMiddleware(API.guest.addGuest))
   //.post('/addGuest', middlewares.asyncMiddleware(API.guest.addGuest))
   .post('/removeGuest', guard.check([['admin']]), express.json(), middlewares.asyncMiddleware(API.guest.removeGuest))
   .post('/allGuests', guard.check([['admin']]), express.json(), middlewares.asyncMiddleware(API.guest.allGuests))
@@ -172,6 +174,13 @@ express()
   // .get('/addGuest', (req, res) => { res.send('yay!'); })
   .get('/client/login', (req, res) => { res.render('client/index.ejs'); })
   .get('/client/*', guard.check([['admin'], ['user']]), (req, res) => { res.render('client/index.ejs'); })
+
+  // .use(function (err, req, res, next) {
+  //   if (err.code === 'permission_denied') {
+  //     res.redirect('/client/login');
+  //   }
+  //   next();
+  // })
 
   // start the server
   .listen(PORT, () => console.log(`Listening on ${PORT}`))
