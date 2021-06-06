@@ -101,7 +101,7 @@ express()
 
     if (userType) {
       res.cookie('authToken', jwt.sign({ permissions: [userType] }, process.env.SECRET, { expiresIn: '3h' }),
-        // { httpOnly: true, secure: true }
+        { httpOnly: true, secure: true }
       );
       res.sendStatus(200);
       return;
