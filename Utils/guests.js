@@ -1,5 +1,14 @@
 const dbUtil = require('./db');
 
+const isExpectedGuest = async (guestId) => {
+    try {
+        return (await dbUtil.executeQuery(`SELECT guest_id from expected where guest_id='${guestId}'`)).length == 1;
+    }
+    catch (e) {
+        return false;
+    }
+};
+
 const getGuest = async (guestId) => {
     return await dbUtil.executeQuery(`SELECT id, guest_id, guest_name, arrival_time, rank, unit from guestsdetails where guest_id='${guestId}'`);
 };
@@ -29,6 +38,7 @@ const deleteGuest = async (guestId) => {
 };
 
 module.exports = {
+    isExpectedGuest,
     getGuest,
     getAllGuests,
     getAllExpectedGuests,

@@ -24,6 +24,10 @@ const addGuest = async (req, res) => {
     if (guestId == null || guestId === "")
         return res.json({ success: false });
 
+    let expected = await guestUtil.isExpectedGuest(guestId);
+    if (!expected)
+        return res.json({ success: false });
+
     let exists = await guestUtil.getGuest(guestId);
     if (exists != null && exists.length > 0)
         return res.json({ success: true });
