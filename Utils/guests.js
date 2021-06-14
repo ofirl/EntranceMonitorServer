@@ -24,7 +24,7 @@ const getAllExpectedGuests = async () => {
 const addGuest = async ({ guestId, guestName = "", arrival_time = new Date() }) => {
     await dbUtil.executeQuery(`INSERT INTO guests(
         guest_id, guest_name${arrival_time ? ', arrival_time' : ''})
-        VALUES (${guestId}, '${guestName}'${arrival_time ? `,'${arrival_time}'` : ''})`);
+        VALUES ('${guestId}', '${guestName}'${arrival_time ? `,'${arrival_time}'` : ''})`);
     let taskDbRow = await getGuest(guestId);
     let success = taskDbRow && taskDbRow.length == 1;
     return { success };
