@@ -79,19 +79,28 @@ express()
   .use('/static', express.static(path.join(__dirname, 'views/client/static')))
   .use('/favicon.ico', express.static(path.join(__dirname, 'views/client/favicon.ico')))
   // .use(passport.initialize())
-  .use(cors())
+  .use(cors({
+    origin: [
+      // "https://localhost:8080",
+      "https://localhost:8081",
+      // "http://localhost:3000",
+      // "http://localhost:5000",
+    ],
+    credentials: true
+  }))
 
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
 
   // .get('/', (req, res) => res.render('pages/addGuest'))
   .post('/token', express.json(), (req, res) => {
+    console.log({ADMIN: process.env.PASSWORD_ADMIN});
     if (req.user.permissions.length > 0)
       res.sendStatus(200);
 
     let { password } = req.body;
     let userType;
-
+    
     if (password === process.env.PASSWORD_ADMIN)
       userType = 'admin';
     else if (password === process.env.PASSWORD_USER)
@@ -101,7 +110,7 @@ express()
 
     if (userType) {
       res.cookie('authToken', jwt.sign({ permissions: [userType] }, process.env.SECRET, { expiresIn: '5h' }),
-        { httpOnly: true, secure: true }
+        { httpOnly: true, secure: true, sameSite: "lax" }
       );
       res.sendStatus(200);
       return;
