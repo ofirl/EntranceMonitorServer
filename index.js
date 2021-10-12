@@ -85,6 +85,7 @@ express()
       "https://localhost:8081",
       // "http://localhost:3000",
       // "http://localhost:5000",
+      "https://witty-ocean-03eebfe03.azurestaticapps.net"
     ],
     credentials: true
   }))
