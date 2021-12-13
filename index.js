@@ -38,7 +38,10 @@ express()
   )
   .use(
     cors({
-      origin: ["http://localhost:4200"],
+      origin: [
+        "http://localhost:4200",
+        "https://brave-cliff-0f73fe710.azurestaticapps.net",
+      ],
       credentials: true,
     })
   )
@@ -79,7 +82,7 @@ express()
     guard.check([["admin"]]),
     middlewares.asyncMiddleware(API.guest.allGuests)
   )
-  .post(
+  .get(
     "/allExpectedGuests",
     guard.check([["admin"]]),
     middlewares.asyncMiddleware(API.guest.allExpected)
