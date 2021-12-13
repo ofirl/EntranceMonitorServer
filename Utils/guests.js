@@ -21,7 +21,8 @@ const getAllExpectedGuests = async () => {
     return await dbUtil.executeQuery(`SELECT id, guest_id, guest_name, rank, unit from expected`);
 };
 
-const addGuest = async ({ guestId, guestName = "", arrival_time = new Date() }) => {
+// const addGuest = async ({ guestId, guestName = "", arrival_time = new Date() }) => {
+const addGuest = async ({ guestId, guestName = "", arrival_time = new Date().toUTCString() }) => {
     await dbUtil.executeQuery(`INSERT INTO guests(
         guest_id, guest_name${arrival_time ? ', arrival_time' : ''})
         VALUES ('${guestId}', '${guestName}'${arrival_time ? `,'${arrival_time}'` : ''})`);
